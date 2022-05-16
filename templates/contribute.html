@@ -1,0 +1,369 @@
+<html>
+    <head>
+           
+        <style>
+        .contri-form{
+           background-color: #F6F9FC;;
+           padding-left: 70px;
+        }
+
+
+        .contri-heading
+        {
+        width: 825px;
+        height: 19px;
+        left: 99px;
+        top: 151px;
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 19px;
+        }
+        .contri-label
+        {
+            
+            width: 211px;
+            height: 37px;
+            left: 121px;
+            top: 187px;
+            background: rgba(0, 160, 255, 0.5);
+            border-radius: 7px;
+            opacity: 0.6;
+        }
+
+        .contri-dis-label
+        {
+      
+          width: 1197px;
+          height: 59px;
+          left: 118px;
+          top: 523px;
+          background: #C4C4C4;
+          opacity: 0.5;
+          border-radius: 7px;
+        }
+        .contri-dis-heading
+        {
+          width: 835px;
+          height: 19px;
+          left: 99px;
+          top: 729px;
+
+          font-family: 'Roboto';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 19px;
+          color: #C4C4C4;
+        }
+  
+/* nabar styling starts*/
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+background-color: #f3f3f3;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+   color: #666;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #00a0ff;
+}
+
+.active {
+  background-color: #00a0ff;
+}
+
+
+/* nabar styling ends*/
+th{
+width: 71px;
+height: 16px;
+left: 1071px;
+top: 522px;
+
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 16px;
+
+color: #000000;
+
+}
+.multiselect
+{
+width:200px;
+}
+.selectBox
+{
+position:relative;
+}
+.selectBox select
+{
+width:100%;
+font-weight:bold;
+}
+.overSelect
+{
+position:absolute;
+left:0;right:0;top:0;bottom:0;
+}
+#checkboxes
+{
+display:none;
+border:1px solid red;
+}
+#checkboxes label
+{
+display:block;
+}
+#checkboxes label:hover
+{
+background-color:#00a0ff;
+}
+.registerbtn {
+            background-color: #00a0ff;
+            color: white;
+            padding: 16px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: auto;
+            opacity: 0.9;
+            font-size: 20px;
+            align: center;
+        }
+        
+        .registerbtn:hover {
+            opacity: 1;
+            background-color: #4CAF50
+        }
+
+
+
+    </style>
+    </head>
+        <body>
+
+          <nav>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#news">Contribute</a></li>
+              
+              <li style="float:right"><a class="active" href="#about">Username</a></li>
+            </ul>
+            </nav>
+
+            <section class="contri-form">
+            <h2>Contribute Knowledge</h2>
+
+            <form method="post" action="/contribute" enctype="multipart/form-data">
+              {% csrf_token %}
+  
+              <label for="ptype" class="contri-heading">1. Select the type of Problem *</label><br>
+
+                <select name="ptype" id="ptype" class="contri-label contri-heading">
+                 <option value="defect" class="contri-heading">Defect</option>
+                 <option value="opportunity" class="contri-heading">Opportunity</option>
+                 <option value="enhancement" class="contri-heading">Enhancement</option>
+                 <option value="supportticket" class="contri-heading">Support Ticket</option>
+                </select><br><br>
+            
+              <!-- <label for="products" class="contri-heading" >2. Select the Products Mapped to the Knowledge *</label><br>
+              <select name="products" id="products" class="contri-label contri-heading">
+                <option value="drivers" class="contri-heading">Drivers</option>
+                <option value="sync" class="contri-heading">Sync</option>
+                <option value="arcesb" class="contri-heading">ArcESB</option>
+                <option value="connectserver" class="contri-heading">Connect Server</option>
+                <option value="connectcloud" class="contri-heading">Connect Cloud</option>
+                <option value="sync" class="contri-heading">Sync</option>
+                <option value="dbamp" class="contri-heading">DBAmp</option>
+                <option value="apiserver" class="contri-heading">API Server</option>
+               </select><br><br> -->
+               <label for="products" class="contri-heading">2. Select the Product Mapped to the Knowledge *</label><br><br>
+                <div class="multiselect">
+                  <div class="selectBox" onclick="showCheckboxes()">
+                  <select>
+                  <option>None</option>
+                  </select>
+                  <div class="overSelect"></div>
+                  </div>
+                  <div id="checkboxes">
+                  <label for="drivers"><input type="checkbox" id="drivers" name="products" value="Drivers">Drivers</label>
+                  <label for="sync"><input type="checkbox" id="sync" name="products" value="Sync">Sync</label>
+                  <label for="arcesb"><input type="checkbox" id="arcesb" name="products" value="ArcESB">ArcESB</label>
+                  <label for="connectserver"><input type="checkbox" id="connectserver" name="products" value="Connect Server">Connect Server</label>
+                  <label for="connectcloud"><input type="checkbox" id="connectcloud" name="products" value="Connect Cloud">Connect Cloud</label>
+                  <label for="dbamp"><input type="checkbox" id="dbamp" name="products" value="DBAmp">DBAmp</label>
+                  <label for="apiserver"><input type="checkbox" id="apiserver" name="products" value="API Server">API Server</label>
+                  </div>
+                  </div>
+             
+                <br><br>
+
+              <label for="itype" class="contri-heading">3. Select the Issue Type *</label><br>
+              <select name="itype" id="itype" class="contri-label contri-heading" onchange='displayJira(this.value)'>
+                <option value="new" class="contri-heading">Select</option>
+                <option value="new" class="contri-heading">New</option>
+                <option value="jira" class="contri-heading">Jira</option>
+                <option value="freshdesk" class="contri-heading">Freshdesk</option>
+                <option value="salesforce" class="contri-heading">Salesforce</option>
+               </select><br><br>
+
+              <table id="jira-issues" style='width: 1197px;height: 285px;left: 121px;top: 513px;background: rgba(0, 160, 255, 0.5);opacity: 0.5;border-radius: 7px;display:none;'>
+                <tr>
+                <th>Type</th>
+                <th>Issue ID</th>
+                <th>Summary</th>
+                <th>Created On</th>
+                <th>Updated</th>
+                </tr>
+                
+              </table>
+
+              
+
+              <label for="summarydescription" id="summarydescription" class="contri-dis-heading">4. Define the Problem Summary and Description</label><br><br>
+              <label for="psummary" id="psummaryheading" class="contri-dis-heading">Problem Summary</label><br><br>
+              <textarea disabled id="psummary" name="psummary" class=" contri-dis-label" style="width: 1172px;min-height: 66px;left: 132px; top: 593px;height: auto;"></textarea><br><br>
+             
+              <label for="pdescription" id="pdescriptionheading" class="contri-dis-heading">Problem Description</label><br>
+              <textarea disabled id="pdescription" name="pdescription" class="contri-dis-label" style="width: 1172px;height: 66px;left: 132px; top: 593px;"></textarea><br><br>
+             
+              <label for="analysisinsights" id="analysisinsights" class="contri-dis-heading">5. Add Analysis and Insights for the Problem</label><br><br>
+              <label for="kanalysis" id="kanalysisheading" class="contri-dis-heading">Knowledge Analysis</label><br>
+              <textarea disabled id="kanalysis" name="kanalysis"  class="contri-dis-label" style="width: 1172px;height: 66px;left: 132px; top: 593px;"></textarea><br><br>
+             
+              <label for="kinsights" id="kinsightsheading" class="contri-dis-heading">Knowledge Insights</label><br>
+              <textarea disabled id="kinsights" name="kinsights" class="contri-dis-label" style="width: 1172px;height: 66px;left: 132px; top: 593px;"></textarea><br><br>
+             
+              
+              <!-- <input type="search" id="tsearch" style="width: 211px;height: 37px;left: 118px;top: 893px;" name="tsearch"><br><br> -->
+              
+              <label for="tags" id="tagsheading" class="contri-dis-heading">Click Submit to Generate suitable tags</label><br><br>
+              <input type="submit"><br>
+
+              
+            </form>
+            <label for="tags" id="tagsheading" >6. Add suitable tags</label><br><br>
+            <div id="div3" hidden class="container mb-3 py-4">
+              
+                  <h3> Here are the generated Tags:</h3>
+                  <!-- {{t}}<br> -->
+                  <form method="post" action="/tagsgeneration" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="form-group">
+                      <label for="ymtags" required><strong>You can select any following tags: </strong></label>&nbsp<br>
+                      {% for x in t %}
+                          <input type="checkbox" name="ymtags" value="{{x}}">{{x}}<br>
+                      {%endfor%}
+                      </div><br>
+                      <h4> If you wants to add your own tag, then write below the tags separated by Comma(,)</h4>
+                      <div class="form-group">
+                          <label for="additionalTags"></label> 
+                          <input type="text" id="additionalTags" placeholder="Add your own tags separated by comma"  name="additionalTags">
+                      </div><br>
+      
+                      <center><button type="submit" class="registerbtn">Submit</button></center>
+                  </form>
+              
+              <hr>
+              <br>
+              </div>
+            <button id="switch">Show Generated Tags:</button>	
+
+           
+            <script type="text/javascript">
+	
+              div3 = document.getElementById("div3");
+            document.getElementById("switch").addEventListener("click", function() {
+              // hide element: element.hidden = true;
+              // show element: element.hidden = false;
+              
+              div3.hidden = !div3.hidden;
+            });
+          </script>
+            <script>
+              var expanded=false;
+              function showCheckboxes()
+              {
+              var checkboxes=document.getElementById("checkboxes");
+              if(!expanded){
+              checkboxes.style.display="block"; 
+              expanded=true;
+              }else{
+              checboxes.style.display="none";
+              expanded=false;
+              }
+              }
+              </script>
+            <script type="text/javascript">
+              function displayJira(val){
+               var element=document.getElementById('jira-issues');
+
+                document.getElementById('summarydescription').classList.remove("contri-dis-heading");
+                document.getElementById('summarydescription').classList.add("contri-heading");
+              
+                document.getElementById('analysisinsights').classList.remove("contri-dis-heading");
+                document.getElementById('analysisinsights').classList.add("contri-heading");
+              
+                document.getElementById('psummary').disabled=false;
+                document.getElementById('psummary').classList.remove("contri-dis-label");
+                document.getElementById('psummary').classList.add("contri-label");
+                document.getElementById('psummaryheading').classList.add("contri-heading");
+                document.getElementById('psummaryheading').classList.remove("contri-dis-heading");
+
+                document.getElementById('pdescription').disabled=false;
+                document.getElementById('pdescription').classList.remove("contri-dis-label");
+                document.getElementById('pdescription').classList.add("contri-label");
+                document.getElementById('pdescriptionheading').classList.add("contri-heading");
+                document.getElementById('pdescriptionheading').classList.remove("contri-dis-heading");
+
+                document.getElementById('kanalysis').disabled=false;
+                document.getElementById('kanalysis').classList.remove("contri-dis-label");
+                document.getElementById('kanalysis').classList.add("contri-label");
+                document.getElementById('kanalysisheading').classList.add("contri-heading");
+                document.getElementById('kanalysisheading').classList.remove("contri-dis-heading");
+
+                document.getElementById('kinsights').disabled=false;
+                document.getElementById('kinsights').classList.remove("contri-dis-label");
+                document.getElementById('kinsights').classList.add("contri-label");
+                document.getElementById('kinsightsheading').classList.add("contri-heading");
+                document.getElementById('kinsightsheading').classList.remove("contri-dis-heading");
+
+                document.getElementById('tagsheading').classList.remove("contri-dis-heading");
+                document.getElementById('tagsheading').classList.add("contri-heading");
+              
+
+                if(val=='jira')
+                 element.style.display='block';
+               else  
+                 element.style.display='none';
+               
+
+
+              
+              }
+              
+              </script> 
+
+
+            </section>
+        </body>
+    </head>
+</html>
