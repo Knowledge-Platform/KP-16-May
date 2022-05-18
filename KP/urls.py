@@ -14,4 +14,5 @@ urlpatterns = [
     path('',views.home, name='home'),
     path('contribute',views.contribute, name='contribute'),
     path('tagsgeneration',views.tagsgeneration, name='tagsgeneration'),
+    path('jira',views.jira,name='jira'),
 ]

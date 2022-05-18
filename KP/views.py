@@ -13,6 +13,9 @@ import math
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize 
+
+import cdata.jira as mod4
+
 nltk.download('stopwords')
 nltk.download('punkt')
 stop_words = list(set(stopwords.words('english')))
@@ -73,14 +76,28 @@ def contribute(request):
 
         graphdb=GraphDatabase.driver(uri = "bolt://localhost:7687", auth=("neo4j", "admin"))
         session=graphdb.session()
+        
+        # q2='''Merge (kp:knowledge {pdescription: '%s', ptype: '%s', psummary: '%s' , kanalysis:'%s', #kinsights:'%s', products:'%s', tags: '%s'})
+        # '''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string)
+
         q2='''Merge (kp:knowledge {pdescription: '%s', ptype: '%s', psummary: '%s' , kanalysis:'%s', kinsights:'%s', products:'%s', tags: '%s'})
-        '''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string)
+
+        WITH kp
+
+        UNWIND split('%s',',') AS tag
+
+        MERGE (t:tags_string {tagname:tag})
+
+        MERGE (kp)-[:belongs_to]->(t)
+
+        '''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string, tags_string)
+
 
         # q2='''Merge (kp:knowledge {pdescription: '%s', ptype: '%s', psummary: '%s', kanalysis:'%s', kinsights:'%s', products:'%s',tags:'%s'})
         # WITH kp
         # UNWIND split('%s',',') AS tag
         # MERGE (t:final_Tags {tagname: tag})
-        # MERGE (kp)-[:belongs_to]->(t)'''%(pdescription,ptype,psummary,kanalysis,kinsisghts,products_string,final_Tags[:-1],datetime_entry.strftime('%Y-%m-%d %H:%M:%S'),final_Tags[:-1])
+        # MERGE (kp)-[:belongs_to]->(t)'''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string)
 
         q1=" match(n) return n "
 
@@ -237,6 +254,15 @@ def generateTags(a,b):
     collection=db.knowledge
     db.knowledge.update({'ID':uniqueId},{"$set": {'tags':finaltags}})
 
+
+def jira(request):
+    conn = mod4.connect("User=knowledgeplatform64@gmail.com;APIToken= ;Url=https://knowledgeplatform64.atlassian.net")
+    # cur = conn.execute("SELECT Key, Name FROM Projects")
+    cur = conn.execute("SELECT * FROM Issues")
+    rs = cur.fetchall()
+    for row in rs:
+        print(row)
+    return render(request,"jira.html")
 
 
 
