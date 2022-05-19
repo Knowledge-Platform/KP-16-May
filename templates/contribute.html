@@ -146,7 +146,7 @@ background-color:#00a0ff;
             width: auto;
             opacity: 0.9;
             font-size: 20px;
-            align: center;
+            text-align: center;
         }
         
         .registerbtn:hover {
@@ -252,7 +252,9 @@ background-color:#00a0ff;
               <label for="kinsights" id="kinsightsheading" class="contri-dis-heading">Knowledge Insights</label><br>
               <textarea disabled id="kinsights" name="kinsights" class="contri-dis-label" style="width: 1172px;height: 66px;left: 132px; top: 593px;"></textarea><br><br>
              
-              
+              <label for="owner" id="owner" class="contri-heading">Owner</label><br>
+              <textarea id="owner" name="owner" class="contri-label" style="width: 182px;height: 36px;left: 132px; top: 593px;"></textarea><br><br>
+             
               <!-- <input type="search" id="tsearch" style="width: 211px;height: 37px;left: 118px;top: 893px;" name="tsearch"><br><br> -->
               
               <label for="tags" id="tagsheading" class="contri-dis-heading">Click Submit to Generate suitable tags</label><br><br>
@@ -260,7 +262,6 @@ background-color:#00a0ff;
 
               
             </form>
-            <a href="/jira">Jira</a>
             <label for="tags" id="tagsheading" >6. Add suitable tags</label><br><br>
             <div id="div3" hidden class="container mb-3 py-4">
               
@@ -352,7 +353,12 @@ background-color:#00a0ff;
               
 
                 if(val=='jira')
-                 element.style.display='block';
+                {
+                element.style.display='block';
+                document.getElementById('psummary').classList.add("contri-dis-label");
+                document.getElementById('pdescription').classList.add("contri-dis-label");
+                
+                }
                else  
                  element.style.display='none';
                

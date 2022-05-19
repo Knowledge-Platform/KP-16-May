@@ -13,9 +13,6 @@ import math
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize 
-
-import cdata.jira as mod4
-
 nltk.download('stopwords')
 nltk.download('punkt')
 stop_words = list(set(stopwords.words('english')))
@@ -36,6 +33,7 @@ def contribute(request):
         products=request.POST.getlist('products')
         kanalysis=request.POST['kanalysis']
         kinsights=request.POST['kinsights']
+        owner=request.POST['owner']
         conn = MongoClient()
         db=conn.knowledgeplatform
         collection=db.knowledge
@@ -49,12 +47,13 @@ def contribute(request):
           "products":products,
           "kanalysis":kanalysis,
           "kinsights":kinsights,
-          "ID":"Yogesh"+str(len(psummary))+str(len(pdescription))+str(len(kinsights)+len(kanalysis)),
+          "owner":owner,
+          "ID":owner+str(len(psummary))+str(len(pdescription))+str(len(kinsights)+len(kanalysis)),
           "tags":finaltags,
 
         }
         global uniqueId
-        uniqueId="Yogesh"+str(len(psummary))+str(len(pdescription))+str(len(kinsights)+len(kanalysis))
+        uniqueId=owner+str(len(psummary))+str(len(pdescription))+str(len(kinsights)+len(kanalysis))
         print("uniqueId inside contribute",uniqueId)
         generateTags(psummary,pdescription)
         
@@ -76,28 +75,18 @@ def contribute(request):
 
         graphdb=GraphDatabase.driver(uri = "bolt://localhost:7687", auth=("neo4j", "admin"))
         session=graphdb.session()
-        
-        # q2='''Merge (kp:knowledge {pdescription: '%s', ptype: '%s', psummary: '%s' , kanalysis:'%s', #kinsights:'%s', products:'%s', tags: '%s'})
-        # '''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string)
-
-        q2='''Merge (kp:knowledge {pdescription: '%s', ptype: '%s', psummary: '%s' , kanalysis:'%s', kinsights:'%s', products:'%s', tags: '%s'})
-
+        q2='''Merge (kp:knowledge {pdescription: '%s', ptype: '%s', psummary: '%s' , kanalysis:'%s', kinsights:'%s', products:'%s', tags: '%s', owner:'%s'})
         WITH kp
-
         UNWIND split('%s',',') AS tag
-
         MERGE (t:tags_string {tagname:tag})
-
         MERGE (kp)-[:belongs_to]->(t)
-
-        '''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string, tags_string)
-
+        '''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string,owner, tags_string)
 
         # q2='''Merge (kp:knowledge {pdescription: '%s', ptype: '%s', psummary: '%s', kanalysis:'%s', kinsights:'%s', products:'%s',tags:'%s'})
         # WITH kp
         # UNWIND split('%s',',') AS tag
         # MERGE (t:final_Tags {tagname: tag})
-        # MERGE (kp)-[:belongs_to]->(t)'''%(pdescription,ptype,psummary,kanalysis,kinsights,products_string,tags_string)
+        # MERGE (kp)-[:belongs_to]->(t)'''%(pdescription,ptype,psummary,kanalysis,kinsisghts,products_string,final_Tags[:-1],datetime_entry.strftime('%Y-%m-%d %H:%M:%S'),final_Tags[:-1])
 
         q1=" match(n) return n "
 
@@ -255,13 +244,21 @@ def generateTags(a,b):
     db.knowledge.update({'ID':uniqueId},{"$set": {'tags':finaltags}})
 
 
+
 def jira(request):
-    conn = mod4.connect("User=knowledgeplatform64@gmail.com;APIToken= ;Url=https://knowledgeplatform64.atlassian.net")
+    conn = mod4.connect("User=knowledgeplatform64@gmail.com;APIToken=39J6H5mXBLWqPM2CgmrYBB08 ;Url=https://knowledgeplatform64.atlassian.net")
     # cur = conn.execute("SELECT Key, Name FROM Projects")
-    cur = conn.execute("SELECT * FROM Issues")
+    cur = conn.execute("SELECT Summary, Id, Description, AssigneeDisplayName FROM Issues")
     rs = cur.fetchall()
+    d = {'Summary':[], 'BugId':[], 'Description':[], 'Assignee':[]}
     for row in rs:
         print(row)
+    for i in rs:
+        d['Summary'].append(i[0]);
+        d['BugId'].append(i[1]);
+        d['Description'].append(i[2])
+        d['Assignee'].append(i[3])
+    print(d)
     return render(request,"jira.html")
 
 
