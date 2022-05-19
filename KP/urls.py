@@ -15,4 +15,6 @@ urlpatterns = [
     path('contribute',views.contribute, name='contribute'),
     path('tagsgeneration',views.tagsgeneration, name='tagsgeneration'),
     path('jira',views.jira,name='jira'),
+    path('salesforce', views.salesforce,name='salesforce'),
+    path('salesforcedisplay', views.salesforcedisplay,name='salesforcedisplay'),
 ]

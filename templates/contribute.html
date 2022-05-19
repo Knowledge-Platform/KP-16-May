@@ -262,6 +262,8 @@ background-color:#00a0ff;
 
               
             </form>
+            <a href="jira">Jira</a><br>
+            <a href="salesforce">Salesforce</a><br>
             <label for="tags" id="tagsheading" >6. Add suitable tags</label><br><br>
             <div id="div3" hidden class="container mb-3 py-4">
               
@@ -352,7 +354,7 @@ background-color:#00a0ff;
                 document.getElementById('tagsheading').classList.add("contri-heading");
               
 
-                if(val=='jira')
+                if(val=='jira' || val=='salesforce' || val=='freshdesk')
                 {
                 element.style.display='block';
                 document.getElementById('psummary').classList.add("contri-dis-label");

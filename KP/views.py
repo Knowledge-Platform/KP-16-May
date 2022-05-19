@@ -16,6 +16,8 @@ from nltk.tokenize import word_tokenize
 nltk.download('stopwords')
 nltk.download('punkt')
 stop_words = list(set(stopwords.words('english')))
+import cdata.salesforce as mod3
+import cdata.jira as mod4
 
 taggs=dict()
 finaltags=[]
@@ -246,7 +248,7 @@ def generateTags(a,b):
 
 
 def jira(request):
-    conn = mod4.connect("User=knowledgeplatform64@gmail.com;APIToken=39J6H5mXBLWqPM2CgmrYBB08 ;Url=https://knowledgeplatform64.atlassian.net")
+    conn = mod4.connect("User=knowledgeplatform64@gmail.com;APIToken=2Fu16O562HbjCKbqIoGqE126 ;Url=https://knowledgeplatform64.atlassian.net")
     # cur = conn.execute("SELECT Key, Name FROM Projects")
     cur = conn.execute("SELECT Summary, Id, Description, AssigneeDisplayName FROM Issues")
     rs = cur.fetchall()
@@ -260,6 +262,37 @@ def jira(request):
         d['Assignee'].append(i[3])
     print(d)
     return render(request,"jira.html")
+
+
+def salesforce(request):
+    conn = mod3.connect("User='af@gcet.com';Password='admin123';Security Token='G7wSptekqNONY1L3hBSs9T27';") #here we import salesforce by name of mod3
+    cur = conn.execute("SELECT Name,BillingState, Id FROM Account")
+    rs = cur.fetchall()
+    print(rs)
+    for row in rs:
+        print(row)
+    
+    global d2
+    d2 = {'name':[], 'billingState':[], 'id' : []}
+
+    for t in rs:
+        print("Hello")
+        d2['name'].append(t[0]);
+        d2['billingState'].append(t[1]);
+        d2['id'].append(t[2])
+    
+    mlt=zip(d2['name'],d2['billingState'],d2['id'])
+    context={'mlt':mlt,}
+
+    return render(request, 'salesforcedisplay.html',context)          
+
+
+#This function is used to display the tickets that are raised in salesforce
+def salesforcedisplay(request):
+    mlt=zip(d2['name'],d2['billingState'],d2['id'])
+    context={'mlt':mlt,}
+    return render(request, 'salesforcedisplay.html',context)
+
 
 
 
